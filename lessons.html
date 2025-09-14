@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberShield - Learning Modules</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg">
+  <title>CS | Learning Modules</title>
   <style>
     body {
       margin: 0;
@@ -422,7 +423,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // 🔒 Protect lessons page
+    //Protect lessons page
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html"; // redirect to login if not authenticated
