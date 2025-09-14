@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield Learning Platform</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    img.logo {
+      width: 180px;
+      max-width: 70%;
+      margin-bottom: 20px;
+      animation: glowPulse 2s infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { filter: drop-shadow(0 0 30px #9cdbc2); }
+      to { filter: drop-shadow(0 0 25px #ed2618); }
+    }
+
+    p {
+      max-width: 650px;
+      font-size: 1.05rem;
+      margin: 15px auto;
+      line-height: 1.6;
+    }
+
+    nav {
+      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #0a0a0a;
+      background: #00ff99;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+      min-width: 120px;
+      text-align: center;
+      border: 1px solid #00ff99;
+      cursor: pointer;
+    }
+    nav a:hover, nav button:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+    }
+
+    @media (max-width: 768px) {
+      img.logo { width: 150px; }
+      p { font-size: 1rem; }
+    }
+    @media (max-width: 480px) {
+      img.logo { width: 130px; }
+      nav { flex-direction: column; }
+      nav a, nav button { width: 100%; padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <img src="CSlogo.png" alt="CyberShield Logo" class="logo">
+
+  <p>
+    Welcome to <strong>CyberShield</strong>, a web-based learning platform developed to enhance 
+    cybersecurity awareness and resilience among Senior High School students. 
+    Through interactive lessons, quizzes, and real-life scenarios, 
+    this platform equips learners with practical knowledge to navigate 
+    the digital world safely and responsibly.
+  </p>
+  
+  <nav>
+    <a href="pretest.html">Pre-Test</a>
+    <a onclick="logout()">Logout</a>
+  </nav>
+  
+  <!-- Firebase (modular v9+) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ✅ Protect page
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      }
+    });
+
+    // ✅ Logout function
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        localStorage.clear();
+        window.location.href = "index.html";
+      } catch (err) {
+        alert("Logout failed: " + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

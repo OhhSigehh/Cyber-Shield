@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield - Post-Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
+      padding: 20px;
+    }
+    h1 { text-align: center; text-shadow: 0 0 8px #00ff99; }
+    .quiz-box {
+      max-width: 800px; margin: 20px auto;
+      background: #111; padding: 20px;
+      border-radius: 10px; border: 1px solid #00ff99;
+    }
+    .question { margin-bottom: 15px; font-weight: bold; }
+    .options label { display: block; margin: 8px 0; cursor: pointer; }
+    button {
+      display: block; margin: 20px auto;
+      padding: 12px 20px; background: #00ff99;
+      color: #0a0a0a; font-weight: bold;
+      border: 1px solid #00ff99; border-radius: 8px;
+      cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #009966; color: #fff; box-shadow: 0 0 8px #00ff99; }
+    #result { text-align: center; margin-top: 20px; font-size: 1.2rem; font-weight: bold; }
+    .next-btn {
+      display: none; margin: 30px auto 10px;
+      padding: 12px 20px; background: #00ff99;
+      color: #0a0a0a; font-weight: bold;
+      border: 1px solid #00ff99; border-radius: 8px;
+      cursor: pointer; transition: 0.3s;
+      text-decoration: none; text-align: center;
+      max-width: 250px;
+    }
+    .next-btn:hover { background: #009966; color: #fff; box-shadow: 0 0 8px #00ff99; }
+  </style>
+</head>
+<body>
+  <h1>Post-Test</h1>
+
+  <form id="quizForm" class="quiz-box">
+    <div class="question">1. A friend sends you a file named “FinalExamAnswers.exe.” What should you do?</div>
+    <div class="options">
+      <label><input type="radio" name="q1" value="Run it immediately"> Run it immediately</label>
+      <label><input type="radio" name="q1" value="Avoid opening & warn your friend" data-correct="true"> Avoid opening & warn your friend</label>
+      <label><input type="radio" name="q1" value="Try on another PC"> Try on another PC</label>
+    </div>
+
+    <div class="question">2. Which is the most secure practice for online accounts?</div>
+    <div class="options">
+      <label><input type="radio" name="q2" value="Reuse the same password"> Reuse the same password</label>
+      <label><input type="radio" name="q2" value="Short simple password"> Short simple password</label>
+      <label><input type="radio" name="q2" value="Unique complex passwords + 2FA" data-correct="true"> Unique complex passwords + 2FA</label>
+    </div>
+
+    <div class="question">3. You find a USB drive outside your classroom. What’s the safest action?</div>
+    <div class="options">
+      <label><input type="radio" name="q3" value="Plug it in to check"> Plug it in to check</label>
+      <label><input type="radio" name="q3" value="Report to IT or dispose safely" data-correct="true"> Report to IT or dispose safely</label>
+      <label><input type="radio" name="q3" value="Keep for personal use"> Keep for personal use</label>
+    </div>
+
+    <div class="question">4. A website asks to install an extension to view content. What should you do?</div>
+    <div class="options">
+      <label><input type="radio" name="q4" value="Install it right away"> Install it right away</label>
+      <label><input type="radio" name="q4" value="Check reviews & source first" data-correct="true"> Check reviews & source first</label>
+      <label><input type="radio" name="q4" value="Ignore warnings"> Ignore warnings</label>
+    </div>
+
+    <div class="question">5. Which of the following is phishing?</div>
+    <div class="options">
+      <label><input type="radio" name="q5" value="Fake bank email asking password" data-correct="true"> Fake bank email asking password</label>
+      <label><input type="radio" name="q5" value="A friend’s homework notes"> A friend’s homework notes</label>
+      <label><input type="radio" name="q5" value="Newsletter you subscribed"> Newsletter you subscribed</label>
+    </div>
+
+    <button type="button" onclick="submitQuiz()">Submit Post-Test</button>
+  </form>
+
+  <div id="result"></div>
+  <a href="results.html" id="nextBtn" class="next-btn">View Results & Comparison</a>
+
+  <!-- Firebase (modular v11) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 🔒 Protect page
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      }
+    });
+
+    // ✅ Quiz submission
+    window.submitQuiz = async function () {
+      const total = 5;
+      let score = 0;
+      let answers = {};
+
+      for (let i = 1; i <= total; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          answers[`q${i}`] = selected.value;
+          if (selected.dataset.correct) score++;
+        } else {
+          answers[`q${i}`] = "No answer";
+        }
+      }
+
+      localStorage.setItem("posttestScore", score);
+
+      let message = "";
+      if (score === total) message = "🌟 Excellent! You mastered it!";
+      else if (score >= total / 2) message = "👍 Good job! You’ve improved!";
+      else message = "⚠ Keep practicing, review lessons again.";
+
+      document.getElementById("result").innerHTML =
+        `You scored <strong>${score}/${total}</strong>. <br>${message}`;
+      document.getElementById("nextBtn").style.display = "block";
+
+      const user = auth.currentUser;
+      if (user) {
+        const scoreRef = doc(db, "users", user.uid, "scores", "post-test");
+        const existing = await getDoc(scoreRef);
+
+        if (existing.exists()) {
+          alert("⚠ You already submitted this test. Scores cannot be changed.");
+          return;
+        }
+
+        await setDoc(scoreRef, {
+          score: score,
+          answers: answers,
+          date: serverTimestamp()
+        });
+
+        console.log("✅ Post-Test saved securely to Firestore");
+      }
+    }
+  </script>
+</body>
+</html>

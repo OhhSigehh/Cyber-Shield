@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield - Pre-Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
+      padding: 20px;
+    }
+    h1 { text-align: center; text-shadow: 0 0 8px #00ff99; }
+    .quiz-box {
+      max-width: 800px; margin: 20px auto;
+      background: #111; padding: 20px;
+      border-radius: 10px; border: 1px solid #00ff99;
+    }
+    .question { margin-bottom: 15px; font-weight: bold; }
+    .options label { display: block; margin: 8px 0; cursor: pointer; }
+    button {
+      display: block; margin: 20px auto;
+      padding: 12px 20px; background: #00ff99;
+      color: #0a0a0a; font-weight: bold;
+      border: 1px solid #00ff99; border-radius: 8px;
+      cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #009966; color: #fff; box-shadow: 0 0 8px #00ff99; }
+    #result { text-align: center; margin-top: 20px; font-size: 1.2rem; font-weight: bold; }
+    .next-btn {
+      display: none; margin: 30px auto 10px;
+      padding: 12px 20px; background: #00ff99;
+      color: #0a0a0a; font-weight: bold;
+      border: 1px solid #00ff99; border-radius: 8px;
+      cursor: pointer; transition: 0.3s;
+      text-decoration: none; text-align: center;
+      max-width: 200px;
+    }
+    .next-btn:hover { background: #009966; color: #fff; box-shadow: 0 0 8px #00ff99; }
+  </style>
+</head>
+<body>
+  <h1>Pre-Test</h1>
+
+  <form id="quizForm" class="quiz-box">
+    <div class="question">1. You get a message claiming you won a prize. What should you do?</div>
+    <div class="options">
+      <label><input type="radio" name="q1" value="Click to claim quickly"> Click to claim quickly</label>
+      <label><input type="radio" name="q1" value="Ignore and report as phishing" data-correct="true"> Ignore and report as phishing</label>
+      <label><input type="radio" name="q1" value="Share with friends first"> Share with friends first</label>
+    </div>
+
+    <div class="question">2. Which password is safest?</div>
+    <div class="options">
+      <label><input type="radio" name="q2" value="password123"> password123</label>
+      <label><input type="radio" name="q2" value="G!tR0cks#2025" data-correct="true"> G!tR0cks#2025</label>
+      <label><input type="radio" name="q2" value="myname2024"> myname2024</label>
+    </div>
+
+    <div class="question">3. While on public Wi-Fi, you need to check your bank account. What’s the safest action?</div>
+    <div class="options">
+      <label><input type="radio" name="q3" value="Log in directly, just this once"> Log in directly, just this once</label>
+      <label><input type="radio" name="q3" value="Use a VPN or wait for secure internet" data-correct="true"> Use a VPN or wait for secure internet</label>
+      <label><input type="radio" name="q3" value="Ask a friend to log in for you"> Ask a friend to log in for you</label>
+    </div>
+
+    <div class="question">4. Your device shows an update notification. What’s the best move?</div>
+    <div class="options">
+      <label><input type="radio" name="q4" value="Install the update immediately" data-correct="true"> Install the update immediately</label>
+      <label><input type="radio" name="q4" value="Ignore it, updates are annoying"> Ignore it, updates are annoying</label>
+      <label><input type="radio" name="q4" value="Delay it for a month"> Delay it for a month</label>
+    </div>
+
+    <div class="question">5. You realize your account has been hacked. What’s the first step?</div>
+    <div class="options">
+      <label><input type="radio" name="q5" value="Change your password and enable 2FA" data-correct="true"> Change your password and enable 2FA</label>
+      <label><input type="radio" name="q5" value="Delete your account immediately"> Delete your account immediately</label>
+      <label><input type="radio" name="q5" value="Do nothing to avoid embarrassment"> Do nothing to avoid embarrassment</label>
+    </div>
+    
+    <button type="button" onclick="submitQuiz()">Submit Pre-Test</button>
+  </form>
+
+  <div id="result"></div>
+  <a href="lessons.html" id="nextBtn" class="next-btn">Next → Lessons</a>
+
+  <!-- Firebase v11 (modular) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 🔒 Protect page
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      }
+    });
+
+    // ✅ Quiz submit function
+    window.submitQuiz = async function () {
+      const total = 5;
+      let score = 0;
+      let answers = {};
+
+      for (let i = 1; i <= total; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          answers[`q${i}`] = selected.value;
+          if (selected.dataset.correct) score++;
+        } else {
+          answers[`q${i}`] = "No answer";
+        }
+      }
+
+      localStorage.setItem("pretestScore", score);
+
+      let message = "";
+      if (score === total) message = "🌟 Excellent! You’re cyber-smart!";
+      else if (score >= total / 2) message = "👍 Good start! Keep it up!";
+      else message = "⚠ Needs improvement. Review lessons carefully.";
+
+      document.getElementById("result").innerHTML =
+        `You scored <strong>${score}/${total}</strong>. <br>${message}`;
+      document.getElementById("nextBtn").style.display = "block";
+
+      const user = auth.currentUser;
+      if (user) {
+        const scoreRef = doc(db, "users", user.uid, "scores", "pre-test");
+        const existing = await getDoc(scoreRef);
+
+        if (existing.exists()) {
+          alert("⚠ You already submitted this test. Scores cannot be changed.");
+          return;
+        }
+
+        await setDoc(scoreRef, {
+          score: score,
+          answers: answers,
+          date: serverTimestamp()
+        });
+
+        console.log("✅ Pre-Test saved securely to Firestore");
+      }
+    }
+  </script>
+</body>
+</html>

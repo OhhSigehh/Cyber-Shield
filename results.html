@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield - Results</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { text-shadow: 0 0 8px #00ff99; }
+    .score-box {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #00ff99;
+    }
+    .score { margin: 15px 0; font-size: 1.2rem; font-weight: bold; }
+    .bar-container {
+      background: #222;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      margin: 10px auto;
+      height: 30px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      text-align: right;
+      padding-right: 10px;
+      line-height: 30px;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+    .pre { background: #ff3333; }  /* red for pre-test */
+    .post { background: #33cc33; } /* green for post-test */
+    .message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .btn {
+      display: inline-block;
+      margin: 20px 10px;
+      padding: 12px 20px;
+      background: #00ff99;
+      color: #0a0a0a;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+    }
+  </style>
+</head>
+<body>
+  <h1>Results & Progress</h1>
+
+  <div class="score-box">
+    <div class="score">Pre-Test Score: <span id="preScore">0</span>/5</div>
+    <div class="bar-container"><div id="preBar" class="bar pre"></div></div>
+
+    <div class="score">Post-Test Score: <span id="postScore">0</span>/5</div>
+    <div class="bar-container"><div id="postBar" class="bar post"></div></div>
+
+    <div class="message" id="message">Loading results...</div>
+  </div>
+
+  <a href="lessons.html" class="btn">Review Lessons</a>
+  <a href="home.html" class="btn">Back to Home</a>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    async function loadResults(user) {
+      try {
+        const preDoc = await getDoc(doc(db, "users", user.uid, "scores", "pre-test"));
+        const postDoc = await getDoc(doc(db, "users", user.uid, "scores", "post-test"));
+
+        const pre = preDoc.exists() ? preDoc.data().score : 0;
+        const post = postDoc.exists() ? postDoc.data().score : 0;
+
+        // update UI
+        document.getElementById("preScore").textContent = pre;
+        document.getElementById("postScore").textContent = post;
+
+        document.getElementById("preBar").style.width = (pre * 20) + "%";
+        document.getElementById("postBar").style.width = (post * 20) + "%";
+        document.getElementById("preBar").textContent = pre * 20 + "%";
+        document.getElementById("postBar").textContent = post * 20 + "%";
+
+        let msg = "";
+        if (post > pre) msg = "🎉 Great job! You improved your cybersecurity awareness!";
+        else if (post === pre) msg = "Steady performance. Keep practicing!";
+        else msg = "⚠ Your post-test score is lower. Review lessons again.";
+
+        document.getElementById("message").textContent = msg;
+      } catch (error) {
+        console.error(error);
+        document.getElementById("message").textContent = "❌ Error loading results.";
+      }
+    }
+
+    // 🔒 Auth guard + fetch
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadResults(user);
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>

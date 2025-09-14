@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield - Learning Modules</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 0 0 8px #00ff99;
+    }
+
+    h1 { font-size: 2rem; margin-bottom: 10px; }
+    h2 { font-size: 1.5rem; margin: 30px 0 15px; }
+
+    .lesson {
+      background: #111;
+      margin: 10px 0;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .lesson button {
+      width: 100%;
+      padding: 15px;
+      font-size: 1.2rem;
+      text-align: left;
+      border: none;
+      background: #00ff99;
+      color: #0a0a0a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .lesson button:hover {
+      background: #009966;
+      color: #fff;
+    }
+
+    .content {
+      display: none;
+      padding: 15px;
+      background: #0a0a0a;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .scenario {
+      background: #1a1a1a;
+      padding: 12px;
+      border-left: 4px solid #00ff99;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .tip {
+      background: #002b1f;
+      padding: 12px;
+      border-radius: 5px;
+    }
+
+    .decision {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    nav {
+      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #0a0a0a;
+      background: #00ff99;
+      padding: 12px 20px;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+      min-width: 120px;
+      text-align: center;
+    }
+
+    nav a:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.2rem; }
+      .lesson button { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Learning Modules</h1>
+
+  <!-- Part 1: General Lessons -->
+  <h2>Intro Lessons</h2>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Why Cybersecurity Matters</button>
+    <div class="content">
+      <p>
+        In today’s digital era, cybersecurity is a critical concern. 
+        Students rely heavily on online platforms for education, gaming, 
+        and communication. However, threats like phishing, malware, 
+        identity theft, and unauthorized access put them at risk. 
+        Even one careless click can compromise sensitive information.
+      </p>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Common Cyber Threats</button>
+    <div class="content">
+      <ul>
+        <li><strong>Phishing:</strong> Fake messages tricking you into revealing personal data.</li>
+        <li><strong>Malware:</strong> Malicious software that can damage your device or steal data.</li>
+        <li><strong>Weak Passwords:</strong> Easy-to-guess logins that hackers can exploit.</li>
+        <li><strong>Identity Theft:</strong> When attackers use your personal information for fraud.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Gaps Between Awareness & Action</button>
+    <div class="content">
+      <p>
+        Many students know about threats but fail to take strong protective steps. 
+        Awareness is only the first step—taking <strong>consistent action</strong> 
+        is what protects you in the long run.
+      </p>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Practical Cyber Safety Tips</button>
+    <div class="content">
+      <ul>
+        <li>Use strong, unique passwords.</li>
+        <li>Enable two-factor authentication.</li>
+        <li>Think before clicking links or downloading files.</li>
+        <li>Update your software regularly.</li>
+        <li>Be cautious with personal information online.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Your Digital Footprint</button>
+    <div class="content">
+      <p>
+        Everything you post, like, and share online creates a digital record.  
+        Recruiters, schools, and even hackers can analyze your history. <br>
+        <b>Tip:</b> <br>
+        Before posting, ask: “Will this affect me in 5 years?”
+      </p>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Social Engineering Tricks</button>
+    <div class="content">
+      <p>
+        Hackers don’t just attack systems—they exploit <strong>people</strong>.  
+        Pretending to be IT staff, friends, or authority figures, they pressure victims 
+        into revealing secrets. <br>
+        <br>
+        <b>Rule:</b> <br> 
+        Never share passwords or codes with anyone, even if they sound legit.
+      </p>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Deepfakes & Fake News</button>
+    <div class="content">
+      <p>
+        Modern AI can create convincing fake videos and voices.  
+        Students must learn to <strong>verify sources</strong> before believing or sharing content. <br>
+        <b>Tip:</b> <br>
+        Always cross-check suspicious information with trusted sites.
+      </p>
+    </div>
+  </div>
+
+  <!-- Part 2: Scenario-Based Lessons -->
+  <h2>Scenario-Based Lessons</h2>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 1: The Suspicious Link</button>
+    <div class="content">
+      <div class="scenario">
+        You receive a message:  
+        “Congratulations! You’ve won a free iPhone. Click here to claim your prize.”
+      </div>
+      <div class="tip">
+        This is a <strong>phishing attempt</strong>.  <br>
+        <b>Tip:</b> <br>
+        Don’t click unknown links. Verify first!
+      </div>
+      <div class="decision">What would you do? Click or Ignore?</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 2: The Free Wi-Fi Trap</button>
+    <div class="content">
+      <div class="scenario">
+        At a café, you connect to “Free_WiFi_123.” Minutes later, your bank app logs you out.
+      </div>
+      <div class="tip">
+        Hackers may run fake Wi-Fi hotspots.  <br>
+        <b>Tip:</b> <br>
+        Use VPNs & avoid banking on public Wi-Fi.
+      </div>
+      <div class="decision">Do you trust free Wi-Fi? Yes / No?</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 3: Weak Password Dilemma</button>
+    <div class="content">
+      <div class="scenario">
+        Your password is “12345.” One week later, your account is hacked.
+      </div>
+      <div class="tip">
+        Weak passwords are easily cracked.  <br>
+        <b>Tip:</b> <br>
+        Use long, unique passwords with numbers & symbols.
+      </div>
+      <div class="decision">Would you update your password today?</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 4: Outdated Apps</button>
+    <div class="content">
+      <div class="scenario">
+        You ignore updates. Soon, malware infects your phone.
+      </div>
+      <div class="tip">
+        Updates patch vulnerabilities.  <br>
+        <b>Tip:</b> <br>
+        Never delay critical updates.
+      </div>
+      <div class="decision">Would you update or skip again?</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 5: Friend Request from a Stranger</button>
+    <div class="content">
+      <div class="scenario">
+        A stranger sends you a friend request with mutual friends.  
+        Their profile looks “normal” but feels off.
+      </div>
+      <div class="tip">
+        Fake accounts steal info & spread scams.  <br>
+        <b>Tip:</b> <br>
+        Only accept requests from people you <strong>truly know</strong>.
+      </div>
+      <div class="decision">Accept or Ignore?</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Scenario 6: The Free Game Download</button>
+    <div class="content">
+      <div class="scenario">
+        A website offers a “premium game crack” for free.  
+        Do you download it?
+      </div>
+      <div class="tip">
+        Most free cracks hide <strong>malware</strong>.  <br>
+        <b>Tip:</b> <br>
+        Stick to official app stores.
+      </div>
+      <div class="decision">Do you take the risk?</div>
+    </div>
+  </div>
+  
+  <!-- Part 3: More Lessons -->
+  <h2>More Lessons</h2>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Two-Factor Authentication (2FA)</button>
+    <div class="content">
+      <p>
+        You already know that strong passwords matter — but even strong ones can be stolen.  
+        <strong>2FA</strong> adds an extra lock, like a text code or authentication app.  
+        Even if hackers guess your password, they can’t get in without the second factor.
+      </p>
+      <div class="tip">
+        <b>Action Step:</b> <br>
+        Enable 2FA on email, social media, and banking apps today.  
+        Think of it as having <em>two keys for one door</em>.
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Ransomware Awareness</button>
+    <div class="content">
+      <div class="scenario">
+        A school computer suddenly locks and shows:  
+        “Your files are encrypted. Pay $200 in Bitcoin to restore them.”
+      </div>
+      <div class="tip">
+        This is <strong>ransomware</strong>. Hackers encrypt files and demand money. <br>
+        <b>Protection:</b> <br>
+        Back up files regularly. Don’t pay — it doesn’t guarantee recovery.  
+      </div>
+    </div>
+  </div>
+  
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Social Media Privacy Settings</button>
+    <div class="content">
+      <p>
+        What you share online can be used against you. Hackers collect birthdays, schools,  
+        and interests to guess passwords or impersonate you.  
+      </p>
+      <div class="tip">
+        <b>Action Step:</b> <br>
+        Review your Facebook, Instagram, or TikTok privacy settings.  
+        Limit who can see your posts, and avoid oversharing personal details.
+      </div>
+    </div>
+  </div>
+  
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Cyber Hygiene Habits</button>
+    <div class="content">
+      <p>
+        Just like brushing teeth daily prevents cavities, <strong>cyber hygiene</strong>  
+        keeps your devices clean from attacks. It’s about consistent small habits:  
+        regular updates, password managers, safe browsing.
+      </p>
+      <div class="tip">
+        <b>Action Step:</b> <br>
+        Schedule “Digital Clean-up Day” once a month — update apps,  
+        clear old accounts, and check privacy settings.
+      </div>
+    </div>
+  </div>
+  
+  <div class="lesson">
+    <button onclick="toggleLesson(this)">Incident Response Basics</button>
+    <div class="content">
+      <div class="scenario">
+        You realize your account was hacked yesterday. What’s your first move?  
+      </div>
+      <div class="tip">
+        <b>Steps:</b>  <br>
+        <ol>
+          <li>Change your password immediately.</li>
+          <li>Enable 2FA.</li>
+          <li>Notify friends if scam messages were sent from your account.</li>
+          <li>Report to platform support.</li>
+        </ol>
+        <i>The faster you act, the less damage hackers can do.</i>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Next Button -->
+  <nav>
+    <a href="posttest.html">Next → Post-Test</a>
+  </nav>
+  
+  <script>
+    function toggleLesson(button) {
+      const content = button.nextElementSibling;
+      const isVisible = content.style.display === "block";
+      
+      document.querySelectorAll(".content").forEach(c => c.style.display = "none");
+      
+      if (!isVisible) {
+        content.style.display = "block";
+      }
+    }
+  </script>
+
+  <!-- Firebase + Auth Protection -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // 🔒 Protect lessons page
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html"; // redirect to login if not authenticated
+      }
+    });
+  </script>
+</body>
+</html>
